@@ -1,8 +1,16 @@
 import Image from "next/image";
 import { Button } from "../_components/ui/button";
-import { LogInIcon } from "lucide-react";
+import { SignInButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-const LoginPage = () => {
+const LoginPage = async () => {
+  const { userId } = await auth();
+
+  if (userId) {
+    redirect("/");
+  }
+
   return (
     <div className="grid h-full grid-cols-2">
       <div className="mx-auto flex h-full max-w-[524px] flex-col justify-center p-8">
@@ -19,15 +27,17 @@ const LoginPage = () => {
           monitorar suas movimentações, e oferecer insights personalizados,
           facilitando o controle do seu orçamento.
         </p>
-        <Button variant="outline">
-          <Image
-            src="/google.svg"
-            width={20}
-            height={20}
-            alt="icone logar com o google"
-          />
-          Entrar com Google
-        </Button>
+        <SignInButton>
+          <Button variant="outline">
+            <Image
+              src="/google.svg"
+              width={20}
+              height={20}
+              alt="icone logar com o google"
+            />
+            Entrar com Google
+          </Button>
+        </SignInButton>
       </div>
       <div className="relative h-full w-full">
         <Image
